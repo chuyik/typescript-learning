@@ -1,0 +1,20 @@
+{
+  "name": "typescript-learning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "npx tsc --outDir dist src/*",
+    "start": "nodemon --quiet --watch 'src/**/*.ts' --watch 'package.json' --exec 'ts-node' src/index.ts"
+  },
+  "dependencies": {
+    "ts-node": "8.5.4",
+    "typescript": "3.7.3"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "1.18.4",
+    "prettier": "^1.19.1"
+  },
+  "keywords": []
+}

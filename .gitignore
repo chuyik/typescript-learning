@@ -1,0 +1,6 @@
+.*
+!.gitignore
+!.vscode/
+!.prettierrc
+node_modules/
+dist/
