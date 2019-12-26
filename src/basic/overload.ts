@@ -25,9 +25,9 @@ interface User {
   age: number
 }
 
-type username = string
+type userId = string
 
-declare function addAge(user: User | username, limit: number): number
+declare function addAge(user: User | userId, limit: number): number
 
 declare function addAge(user: User): number
-declare function addAge(user: username, limit: number): number
+declare function addAge(user: userId, limit: number): number

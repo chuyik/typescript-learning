@@ -1,26 +1,13 @@
-interface Length {
-  length: number
+/**
+ * 获取数组的第一个元素
+ */
+function shift<T>(arr: T[]): T {
+  return arr[0]
 }
 
-function size<T extends Length>(arg: T): number {
-  return arg.length
-}
-
-size([])
-
-// --------------------------- //
-// --------------------------- //
-// --------------------------- //
-
-function getSize<T extends Length>(arg: T): number {
-  if (typeof arg === "string") {
-    return arg.length * 2
-  }
-  return arg.length
-}
-
-getSize([])
-getSize("中文")
+shift(["1", "2"]) // 返回值类型是 string
+shift([1, 2]) // 返回值类型是 number
+shift([1, "2"]) // 返回值类型是 string | number
 
 // --------------------------- //
 // --------------------------- //
