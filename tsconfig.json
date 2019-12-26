@@ -5,8 +5,8 @@
     "sourceMap": false,
     "allowJs": false,
     "lib": [
-      "es6",
-      "dom"
+      "ES2015",
+      "DOM"
     ],
     "rootDir": "src",
     "moduleResolution": "node"

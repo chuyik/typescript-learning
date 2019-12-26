@@ -1,11 +1,20 @@
 console.clear()
 
-// import "./enum"
-import "./interface"
+import "./basic/primitive"
+import "./basic/interface"
+import "./basic/enum"
+import "./basic/generic"
+import "./basic/union"
+import "./basic/intersection"
+import "./basic/type"
+import "./basic/overload"
 
-type Exclude2<T, U> = T extends U ? never : T
-
-// 相当于: type A = 'a'
-type A = Exclude2<"x" | "a", "b" | "y" | "z">
-
-console.log("aas!!!!!...")
+// import "./advanced/any-never-unknown"
+// import "./advanced/namespace"
+// import "./advanced/in"
+// import "./advanced/infer"
+// import "./advanced/typeof"
+// import "./advanced/keyof"
+// import "./advanced/as-const"
+// import "./advanced/readonly"
+// import "./advanced/utility-types"

@@ -3,21 +3,42 @@
 # 主要目标
 
 - TypeScript 使用入门
-- 介绍 TypeScript 普通类型
-- 介绍 TypeScript 高级类型
-- 介绍 TypeScript 泛型的用法
+- 介绍 TypeScript 普通类型和语法
+
+  - 原始类型
+  - 数组
+  - 接口
+  - 枚举
+  - 泛型
+  - 联合类型
+  - 类型守护
+  - 交叉类型
+  - type 类型别名
+  - 重载函数
+
+- 介绍 TypeScript 高级类型和语法
+  - 特殊类型 (any / unknown / never)
+  - namespace 命名空间
+  - in 可以遍历枚举类型
+  - infer
+  - typeof 捕获变量的类型
+  - typeof 捕获类成员的类型
+  - keyof 捕获键的名称
+  - as const
+  - readonly
+  - 内置类型别名
 
 # 介绍
 
 1. TypeScript 具有类型系统，是 JavaScript 的超集
 2. 业界有很多项目用 TypeScript 开发，包括：
 
-- Web 框架：angular / mobx
-- UI：ant-design / Grafana
-- 游戏框架：Babylon.js / egret
-- 服务器框架：nest.js / deno / typeorm
-- App 框架：ionic / NativeScript
-- IDE: VSCode
+   - Web 框架：angular / mobx
+   - UI：ant-design / Grafana
+   - 游戏框架：Babylon.js / egret
+   - 服务器框架：nest.js / deno / typeorm
+   - App 框架：ionic / NativeScript
+   - IDE: VSCode
 
 3. IDE 对 TypeScript 支持很友好，包括智能提示和依赖自动导入
 4. 支持类型校验、枚举、泛型、注解、接口
@@ -28,28 +49,28 @@
 
 1. 安装依赖
 
-```bash
-yarn add typescript ts-node
-```
+   ```bash
+   yarn add typescript ts-node
+   ```
 
-2. 创建以下文件：
+2. 创建必要文件
 
-- index.ts
-- tsconfig.json
+   - index.ts
+   - tsconfig.json
 
 3. 测试运行
 
-```bash
-npx ts-node index.ts
-```
+   ```bash
+   npx ts-node index.ts
+   ```
 
 4. 编译成 JavaScript
 
-```bash
-tsc index.ts
-```
+   ```bash
+   tsc index.ts
+   ```
 
-# 基本类型
+# 基本类型和语法
 
 ## 原始类型
 
@@ -102,37 +123,34 @@ let myPoint: Point = {
 console.log(myPoint.z)
 ```
 
-## 特殊类型
+## 枚举
 
-any
-
-any 类型在 TypeScript 类型系统中占有特殊的地位。它提供给你一个类型系统的「后门」,TypeScript 将会把类型检查关闭。在类型系统里 any 能够兼容所有的类型（包括它自己）。因此，所有类型都能被赋值给它，它也能被赋值给其他任何类型。
-
-void
+枚举是组织相关联的常量的一种方式，许多编程语言都有枚举数据类型
 
 ```ts
-function log(message: string): void {
-  console.log(message)
+enum Colors {
+  Red,
+  Blue,
+  Green
 }
 ```
 
-泛型
+默认情况下，第一个枚举值是 `0`，后续值自增一
+
+## 泛型
 
 ```ts
 function reverse<T>(items: T[]): T[] {
-  const toreturn = []
+  const ret = []
   for (let i = items.length - 1; i >= 0; i--) {
-    toreturn.push(items[i])
+    ret.push(items[i])
   }
-  return toreturn
+  return ret
 }
 
 const sample = [1, 2, 3]
 let reversed = reverse(sample)
 
-console.log(reversed) // 3, 2, 1
-
-// Safety
 reversed[0] = "1" // Error
 reversed = ["1", "2"] // Error
 
@@ -150,21 +168,32 @@ function formatCommandline(command: string[] | string) {
   } else {
     line = command.join(" ").trim()
   }
-
-  // Do stuff with line: string
+  return line
 }
 ```
 
 ```ts
 var myType: string[] | string | number | boolean
-//myType类型可以是字符串数组、字符串、数字、布尔值
+// myType类型可以是字符串数组、字符串、数字、布尔值
 myType = "type"
 myType = ["a", "b", "c"]
 myType = 100
 myType = false
 
-//不可以是其他类型
+// 不可以是其他类型
 myType = function() {} //报错
+```
+
+## 类型守护
+
+类型守护是一种错误提示机制。
+JavaScript 一个常用的方式就是使用 typeof 或者 instanceof 来在运行时检查一个表达式的类型。TypeScript 现在可在 if 区域块中理解这种情况。
+
+```ts
+var x: any = {}
+if (typeof x === "string") {
+  console.log(x.splice(3, 1)) //提示错误信息
+}
 ```
 
 ## 交叉类型
@@ -193,37 +222,16 @@ const a = x.a
 const b = x.b
 ```
 
-## 元祖类型
+## type 类型别名
 
-JavaScript 并没有支持类似于元组的支持。开发者通常只能使用数组来表示元组，但是 TypeScript 类型系统支持它。使用 :[typeofmember1, typeofmember2] 能够为元组添加类型注解，元组可以包含任意数量的成员，以下例子演示了元组：
-
-```ts
-let nameNumber: [string, number]
-
-// Ok
-nameNumber = ["Jenny", 221345]
-
-// Error
-nameNumber = ["Jenny", "221345"]
-
-// 将其与 TypeScript 中的解构一起使用：
-let nameNumber: [string, number]
-nameNumber = ["Jenny", 322134]
-
-const [name, num] = nameNumber
-```
-
-## 类型别名
-
-TypeScript 提供使用类型注解的便捷语法，你可以使用 type SomeName = someValidTypeAnnotation 的语法来创建别名：
+TypeScript 提供使用类型注解的便捷语法，你可以使用 `type Var = SomeType` 的语法来创建别名：
 
 ```ts
 type StrOrNum = string | number
 
-// 使用
-let sample: StrOrNum
-sample = 123
-sample = "123"
+let data: StrOrNum
+data = 123
+data = "123"
 
 // 会检查类型
 sample = true // Error
@@ -237,19 +245,54 @@ type Coordinates = [number, number]
 type Callback = (data: string) => void
 ```
 
-## 类型守护
+## 重载函数
 
-类型守护是一种错误提示机制。
-JavaScript 一个常用的方式就是使用 typeof 或者 instanceof 来在运行时检查一个表达式的类型。TypeScript 现在可在 if 区域块中理解这种情况。
+在 JavaScript 中，依据不同参数类型或参数个数执行一些不同函数体的实现很常见。TypeScript 提供了重载函数的功能，可以精确定义函数接收的参数类型。
 
 ```ts
-var x: any = {}
-if (typeof x === "string") {
-  console.log(x.splice(3, 1)) //提示错误信息
+interface User {
+  name: string
+  age: number
+}
+
+declare function addAge(para: User | userId, flag?: boolean): number
+```
+
+# 高级类型和语法
+
+## 特殊类型
+
+### any
+
+`any` 类型在 TypeScript 类型系统中占有特殊的地位。它提供给你一个类型系统的「后门」，可以把类型检查关闭。在类型系统里 `any` 能够兼容所有的类型（包括它自己）。因此，所有类型都能被赋值给它，它也能被赋值给其他任何类型。
+
+### never / unknown
+
+`never` 和 `unknown` 分别是 TypeScript 2.0 和 3.0 引入的新概念。
+`never` 表示不会出现的类型，是最小子集，一般用在出现错误的场景；与 `void` 的差异在于，`void` 表示空类型，`never` 表示永远不会返回的类型。`void` 变量可以被赋空值，`never` 变量不能被赋值。
+`unknown` 表示任意类型；与 `any` 不同的地方在于，`any` 是关闭了类型检查，并不代表一种类型集合。
+
+![never vs unknown](./imgs/never-vs-unknown.png)
+
+`never` 示例：
+
+```ts
+function fail(message: string): never {
+  throw new Error(message)
+}
+
+let foo: never = 123 // 赋值会报错
+```
+
+### void
+
+```ts
+function log(message: string): void {
+  console.log(message)
 }
 ```
 
-## 命名空间
+## namespace 命名空间
 
 ```ts
 namespace Utility {
@@ -266,15 +309,13 @@ Utility.log("Call me")
 Utility.error("maybe")
 ```
 
-namespace 关键字通过 TypeScript 编译后，与我们看到的 JavaScript 代码一样：
+`namespace` 关键字通过 TypeScript 编译后，与我们看到的 JavaScript 代码一样：
 
 ```js
 ;(function(Utility) {
   // 添加属性至 Utility
 })((Utility || Utility = {}))
 ```
-
-# 高级类型
 
 ## in 可以遍历枚举类型
 
@@ -285,18 +326,17 @@ type Obj = { [p in Keys]: any } // -> { a: any, b: any }
 
 ## infer
 
-在条件类型语句中, 可以用 infer 声明一个类型变量并且对它进行使用，
-我们可以用它获取函数的返回类型， 源码如下：
+`infer` 表示在 `extends` 条件语句中待推断的类型变量。
 
 ```ts
 type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any
 ```
 
-其实这里的 infer R 就是声明一个变量来承载传入函数签名的返回值类型, 简单说就是用它取到函数返回值的类型方便之后使用。
+其实这里的 `infer R` 就是声明一个变量来承载传入函数签名的返回值类型, 简单说就是用它取到函数返回值的类型方便之后使用。
 
-## 捕获变量的类型 typeof
+## typeof 捕获变量的类型
 
-你可以通过 typeof 关键字告诉编译器，某变量的类型与其他类型相同，如下所示：
+你可以通过 `typeof` 关键字告诉编译器，某变量的类型与其他类型相同，如下所示：
 
 ```ts
 let foo = 123
@@ -306,7 +346,7 @@ bar = 456 // ok
 bar = "789" // Error: 'string' 不能分配给 'number' 类型
 ```
 
-## 捕获类成员的类型
+## typeof 捕获类成员的类型
 
 与捕获变量的类型相似，你仅仅是需要声明一个变量用来捕获到的类型：
 
@@ -321,9 +361,9 @@ declare let _foo: Foo
 let bar: typeof _foo.foo
 ```
 
-## 捕获键的名称
+## keyof 捕获键的名称
 
-keyof 操作符能让你捕获一个类型的键。例如，你可以使用它来捕获变量的键名称，在通过使用 typeof 来获取类型之后：
+`keyof` 操作符能让你捕获一个类型的键。例如，你可以使用它来捕获变量的键名称，在通过使用 `typeof` 来获取类型之后：
 
 ```ts
 const colors = {
@@ -338,3 +378,24 @@ color = "red" // ok
 color = "blue" // ok
 color = "anythingElse" // Error
 ```
+
+## as const
+
+@TODO:
+
+## readonly
+
+@TODO:
+
+## 内置类型别名
+
+https://www.typescriptlang.org/docs/handbook/utility-types.html
+
+Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType / ThisType / InstanceType / NonNullable / Parameters / ConstructorParameters
+
+@TODO:
+
+# 参考文章
+
+- [深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)（英文版：[TypeScript Deep Dive](https://basarat.gitbooks.io/typescript/)）
+- [TypeScript 强大的类型别名](https://juejin.im/post/5c2f87ce5188252593122c98)
