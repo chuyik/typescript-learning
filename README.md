@@ -13,10 +13,10 @@
   - 枚举
   - 泛型
   - 类型守护
+  - 重载函数
+  - type 类型别名
   - 联合类型 |
   - 交叉类型 &
-  - type 类型别名
-  - 重载函数
 - [高级类型和语法](#高级类型和语法)
   - 特殊类型
     - any
@@ -188,6 +188,42 @@ if (typeof xyz === "string") {
 }
 ```
 
+## 重载函数
+
+在 JavaScript 中，依据不同参数类型或参数个数执行一些不同函数体的实现很常见。TypeScript 提供了重载函数的功能，可以精确定义函数接收的参数类型。
+
+```ts
+interface User {
+  name: string
+  age: number
+}
+
+declare function addAge(para: User | userId, flag?: boolean): number
+```
+
+## type 类型别名
+
+TypeScript 提供使用类型注解的便捷语法，你可以使用 `type Var = SomeType` 的语法来创建别名：
+
+```ts
+type StrOrNum = string | number
+
+let data: StrOrNum
+data = 123
+data = "123"
+
+// 会检查类型
+sample = true // Error
+```
+
+与接口不同，你可以为任意的类型注解提供类型别名（在联合类型和交叉类型中比较实用），下面是一些能让你熟悉语法的示例。
+
+```ts
+type Text = string | { text: string }
+type Coordinates = [number, number]
+type Callback = (data: string) => void
+```
+
 ## 联合类型 |
 
 联合类型与下面的交叉类型利用了位运算逻辑操作符 `|` 和 `&`，先回顾下位运算逻辑：
@@ -262,42 +298,6 @@ const x = extend({ a: "hello" }, { b: 42 })
 // 现在 x 拥有了 a 属性与 b 属性
 const a = x.a
 const b = x.b
-```
-
-## type 类型别名
-
-TypeScript 提供使用类型注解的便捷语法，你可以使用 `type Var = SomeType` 的语法来创建别名：
-
-```ts
-type StrOrNum = string | number
-
-let data: StrOrNum
-data = 123
-data = "123"
-
-// 会检查类型
-sample = true // Error
-```
-
-与接口不同，你可以为任意的类型注解提供类型别名（在联合类型和交叉类型中比较实用），下面是一些能让你熟悉语法的示例。
-
-```ts
-type Text = string | { text: string }
-type Coordinates = [number, number]
-type Callback = (data: string) => void
-```
-
-## 重载函数
-
-在 JavaScript 中，依据不同参数类型或参数个数执行一些不同函数体的实现很常见。TypeScript 提供了重载函数的功能，可以精确定义函数接收的参数类型。
-
-```ts
-interface User {
-  name: string
-  age: number
-}
-
-declare function addAge(para: User | userId, flag?: boolean): number
 ```
 
 <p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
