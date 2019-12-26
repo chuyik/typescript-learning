@@ -1,5 +1,5 @@
 interface Length {
-  length?: number
+  length: number
 }
 
 function size<T extends Length>(arg: T): number {
@@ -7,6 +7,20 @@ function size<T extends Length>(arg: T): number {
 }
 
 size([])
+
+// --------------------------- //
+// --------------------------- //
+// --------------------------- //
+
+function getSize<T extends Length>(arg: T): number {
+  if (typeof arg === "string") {
+    return arg.length * 2
+  }
+  return arg.length
+}
+
+getSize([])
+getSize("中文")
 
 // --------------------------- //
 // --------------------------- //

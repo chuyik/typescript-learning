@@ -1,23 +1,27 @@
 ## TypeScript 从入门到精通
 
-# 主要目标
+<div id="导航" />
 
-- TypeScript 使用入门
-- 介绍 TypeScript 普通类型和语法
+# 导航
 
+- [介绍](#介绍)
+- [使用入门](#使用入门)
+- [基本类型和语法](#基本类型和语法)
   - 原始类型
   - 数组
   - 接口
   - 枚举
   - 泛型
-  - 联合类型
   - 类型守护
-  - 交叉类型
+  - 联合类型 |
+  - 交叉类型 &
   - type 类型别名
   - 重载函数
-
-- 介绍 TypeScript 高级类型和语法
-  - 特殊类型 (any / unknown / never)
+- [高级类型和语法](#高级类型和语法)
+  - 特殊类型
+    - any
+    - never / unknown
+    - void
   - namespace 命名空间
   - in 可以遍历枚举类型
   - infer
@@ -27,6 +31,9 @@
   - as const
   - readonly
   - 内置类型别名
+- [参考文章](#参考文章)
+
+<div id="介绍" />
 
 # 介绍
 
@@ -42,6 +49,12 @@
 
 3. IDE 对 TypeScript 支持很友好，包括智能提示和依赖自动导入
 4. 支持类型校验、枚举、泛型、注解、接口
+5. 只负责编译，无运行时，不引入额外开销
+6. 始终与 ESMAScript 语言标准一致
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
+
+<div id="使用入门" />
 
 # 使用入门
 
@@ -69,6 +82,10 @@
    ```bash
    tsc index.ts
    ```
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
+
+<div id="基本类型和语法" />
 
 # 基本类型和语法
 
@@ -158,7 +175,45 @@ reversed[0] = 1 // ok
 reversed = [1, 2] // ok
 ```
 
-## 联合类型
+## 类型守护
+
+类型守护是一种错误提示机制。
+JavaScript 一个常用的方式就是使用 typeof 或者 instanceof 来在运行时检查一个表达式的类型。TypeScript 现在可在 if 区域块中理解这种情况。
+
+```ts
+let xyz = []
+if (typeof xyz === "string") {
+  console.log(xyz.splice(3, 1)) //提示错误信息
+}
+```
+
+## 联合类型 |
+
+联合类型与下面的交叉类型利用了位运算逻辑操作符 `|` 和 `&`，先回顾下位运算逻辑：
+
+```ts
+1001 | 1010 = 1011    // 合并1
+1001 & 1010 = 1000    // 只保留共有1
+```
+
+在 TypeScript 中的表现：
+
+```ts
+interface IA {
+  a: string
+  b: number
+}
+
+type TB = {
+  b: number
+  c: number[]
+}
+
+type TC = IA | TB // TC类型的变量的键只需包含ab或bc即可，当然也可以abc都有
+type TD = IA & TB // TD类型的变量的键必需包含abc
+```
+
+实际用法：
 
 ```ts
 function formatCommandline(command: string[] | string) {
@@ -170,9 +225,7 @@ function formatCommandline(command: string[] | string) {
   }
   return line
 }
-```
 
-```ts
 var myType: string[] | string | number | boolean
 // myType类型可以是字符串数组、字符串、数字、布尔值
 myType = "type"
@@ -184,19 +237,7 @@ myType = false
 myType = function() {} //报错
 ```
 
-## 类型守护
-
-类型守护是一种错误提示机制。
-JavaScript 一个常用的方式就是使用 typeof 或者 instanceof 来在运行时检查一个表达式的类型。TypeScript 现在可在 if 区域块中理解这种情况。
-
-```ts
-var x: any = {}
-if (typeof x === "string") {
-  console.log(x.splice(3, 1)) //提示错误信息
-}
-```
-
-## 交叉类型
+## 交叉类型 &
 
 在 JavaScript 中， extend 是一种非常常见的模式，在这种模式中，你可以从两个对象中创建一个新对象，新对象会拥有着两个对象所有的功能。交叉类型可以让你安全的使用此种模式：
 
@@ -257,6 +298,10 @@ interface User {
 
 declare function addAge(para: User | userId, flag?: boolean): number
 ```
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
+
+<div id="高级类型和语法" />
 
 # 高级类型和语法
 
@@ -394,6 +439,10 @@ https://www.typescriptlang.org/docs/handbook/utility-types.html
 Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType / ThisType / InstanceType / NonNullable / Parameters / ConstructorParameters
 
 @TODO:
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
+
+<div id="参考文章" />
 
 # 参考文章
 
