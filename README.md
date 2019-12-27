@@ -31,6 +31,18 @@
   - as const
   - readonly
   - 内置类型别名
+  - 自定义类型
+    - 模块内类型
+    - 全局类型
+    - 全局工具方法
+- [TS 3.7 最新语法](#TS3.7最新语法)
+  - Optional Chaining（可选链操作符）
+  - Nullish Coalescing（双问号操作符）
+  - Assertion Functions
+- [让 TypeScript 变得更好](#让TypeScript变得更好)
+  - 不解人意的对象类型
+  - SuperEnum vs Enum
+  - 类型提示最终处理结果
 - [参考文章](#参考文章)
 
 <div id="介绍" />
@@ -322,12 +334,34 @@ const b = x.b
 
 `never` 示例：
 
+> 实际上的体现就是只能抛出错误
+
 ```ts
 function fail(message: string): never {
   throw new Error(message)
 }
 
 let foo: never = 123 // 赋值会报错
+```
+
+`Any`
+```typescript
+let value: any
+
+value = 'xxx'   // OK
+value.foo.bar()  // OK
+
+let value2: string = value  // OK
+```
+
+`unknown`
+```typescript
+let value: unknown
+
+value = 'xxx'   // OK
+value.foo.bar()  // Error
+
+let value2: string = value  // Error
 ```
 
 ### void
@@ -444,6 +478,83 @@ Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType /
 <p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
 <div id="参考文章" />
+
+# 让 TypeScript 变得更好
+
+## 不解人意的对象类型
+
+`src/better/object-type`
+
+## SuperEnum vs Enum
+
+`Enum`:
+
+![enum.png](./imgs/enum.png)
+
+`superEnum` 数字类型：
+
+```typescript
+superEnum Grades {
+  silver = 2,
+  gold,
+  pt,
+  trial,
+}
+
+// 第一种变体
+console.log(Grades.values)        // [2, 3, 4, 5]
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.map.silver)    // 2
+console.log(Grades.map[2])        // 'silver'
+console.log(Grades.map)           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
+
+// 第二种变体，增加关键字 values、keys、map
+console.log(Grades.values)        // [2, 3, 4, 5]
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.silver)        // 2
+console.log(Grades[2])            // 'silver'
+console.log(Grades.map)           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
+```
+
+`superEnum` 字符串类型：
+
+```typescript
+superEnum Grades {
+  silver: string,
+  gold,
+  pt,
+  trial,
+}
+
+console.log(Grades.values)        // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.map.silver)    // 'silver'
+console.log(Grades.map)           // { silver: 'silver', gold: 'gold', pt: 'pt', trial: 'trial' }
+```
+
+`superEnum` 类型混合：
+
+```typescript
+superEnum Grades: string {
+  silver = 2,
+  gold: string,
+  pt = 'platinum',
+  trial,
+}
+
+console.log(Grades.values)        // [2, 'gold', 'platinum', 'trial']
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.map.silver)    // 2
+console.log(Grades.map[2])        // 'silver'
+```
+
+## 类型提示最终处理结果
+
+![type-tips.png](./imgs/type-tips.png)
+
+Real Reference: `utils/zone-space`
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
 # 参考文章
 

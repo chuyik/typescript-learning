@@ -19,3 +19,5 @@ import "./basic/intersection"
 // import "./advanced/as-const"
 // import "./advanced/readonly"
 // import "./advanced/utility-types"
+
+// import './better/enum'
