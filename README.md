@@ -35,11 +35,11 @@
     - 模块内类型
     - 全局类型
     - 全局工具方法
-- [TS 3.7 最新语法](#TS3.7最新语法)
+- [TS 3.7 最新语法](#ts-3.7-最新语法)
   - Optional Chaining（可选链操作符）
   - Nullish Coalescing（双问号操作符）
   - Assertion Functions
-- [让 TypeScript 变得更好](#让TypeScript变得更好)
+- [让 TypeScript 变得更好](#让-typescript-变得更好)
   - 不解人意的对象类型
   - SuperEnum vs Enum
   - 类型提示最终处理结果
@@ -491,7 +491,7 @@ Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType /
 
 ![enum.png](./imgs/enum.png)
 
-`superEnum` 数字类型：
+`superEnum` 数字类型（变得更强）：
 
 ```typescript
 superEnum Grades {
@@ -516,7 +516,7 @@ console.log(Grades[2])            // 'silver'
 console.log(Grades.map)           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
 ```
 
-`superEnum` 字符串类型：
+`superEnum` 字符串类型（变得更智能）：
 
 ```typescript
 superEnum Grades {
