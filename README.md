@@ -38,7 +38,6 @@
 - [TS 3.7 最新语法](#ts-3.7-最新语法)
   - Optional Chaining（可选链操作符）
   - Nullish Coalescing（双问号操作符）
-  - Assertion Functions
 - [让 TypeScript 变得更好](#让-typescript-变得更好)
   - 不解人意的对象类型
   - SuperEnum vs Enum
@@ -478,6 +477,38 @@ Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType /
 <p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
 <div id="参考文章" />
+
+# TS 3.7 最新语法
+
+## Optional Chaining（可选链操作符）
+
+```typescript
+// before
+if (user && user.address) {
+  // ...
+}
+
+callback && callback()
+
+// after
+if (user?.address) {    // 自判断属性访问
+  // ...     
+}
+
+callback?.()    // 自判断函数调用
+```
+## Nullish Coalescing（双问号操作符）
+
+```typescript
+// before
+const isBlack = params.isBlack || true   // ❌
+const isBlack = params.hasOwnProperty('isBlack') ? params.isBlack : true  // ✅
+
+// after
+const isBlack = params.isBlack ?? true  // ✅
+```
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
 # 让 TypeScript 变得更好
 
