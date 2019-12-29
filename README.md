@@ -35,7 +35,7 @@
     - 模块内类型
     - 全局类型
     - 全局工具方法
-- [TS 3.7 最新语法](#ts-3.7-最新语法)
+- [TS 3.7 最新语法](#ts-37-最新语法)
   - Optional Chaining（可选链操作符）
   - Nullish Coalescing（双问号操作符）
 - [让 TypeScript 变得更好](#让-typescript-变得更好)
