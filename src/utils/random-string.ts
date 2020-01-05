@@ -1,5 +1,5 @@
 export function limitRandom(max, min) {
-  return Math.floor(Math.random() * max) - min
+  return Math.random() * (max - min) + min
 }
 
 export default function (length: number = 8): string {
@@ -8,7 +8,7 @@ export default function (length: number = 8): string {
   let resultStr = ''
 
   for (let i = 0; i < length; i++) {
-    resultStr += alphabet[limitRandom(seedLength, 0)]
+    resultStr += alphabet[Math.floor(limitRandom(seedLength, 0))]
   }
 
   return resultStr
