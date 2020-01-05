@@ -4,17 +4,29 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "build": "npx tsc --outDir dist src/*",
-    "start": "nodemon --quiet --watch 'src/**/*.ts' --watch 'package.json' --exec 'ts-node' src/index.ts"
+    "build": "tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "start": "nodemon src/index.ts"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/",
+      "@types/",
+      "package.json",
+      "tsconfig.json"
+    ],
+    "execMap": {
+      "ts": "ts-node"
+    }
   },
   "dependencies": {
     "ts-node": "8.5.4",
+    "tsconfig-paths": "^3.9.0",
+    "tscpaths": "^0.0.9",
     "typescript": "3.7.3"
   },
-  "license": "MIT",
   "devDependencies": {
     "nodemon": "1.18.4",
     "prettier": "^1.19.1"
   },
-  "keywords": []
+  "license": "MIT"
 }

@@ -1,4 +1,4 @@
-console.clear()
+// console.clear()
 
 import "./basic/primitive"
 import "./basic/interface"
@@ -21,3 +21,7 @@ import "./basic/intersection"
 // import "./advanced/utility-types"
 
 // import './better/enum'
+
+import randomString from '~/utils/random-string'
+
+console.log('randomString: ', randomString())

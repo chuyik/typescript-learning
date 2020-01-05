@@ -512,6 +512,20 @@ const isBlack = params.isBlack ?? true  // ✅
 
 # 让 TypeScript 变得更好
 
+### 在编译完成的代码中没有进行路径解析
+> Module path maps are not resolved in emitted code #10866
+> https://github.com/microsoft/TypeScript/issues/10866
+
+解决方案：
+
+```typescript
+// tsc 编译后支持
+tscpaths: tsc && tscpaths -p tsconfig.json -s ./src -o ./dist
+
+// ts-node 运行支持
+tsconfig-paths: npx ts-node -r tsconfig-paths/register src/index.ts
+```
+
 ## 不解人意的对象类型
 
 `src/better/object-type`
