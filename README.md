@@ -7,41 +7,42 @@
 - [介绍](#介绍)
 - [使用入门](#使用入门)
 - [基本类型和语法](#基本类型和语法)
-  - 原始类型
-  - 数组
-  - 接口
-  - 枚举
-  - 泛型
-  - 类型守护
-  - 重载函数
-  - type 类型别名
-  - 联合类型 |
-  - 交叉类型 &
+  - [原始类型](#原始类型)
+  - [数组](#数组)
+  - [接口](#接口)
+  - [枚举](#枚举)
+  - [泛型](#泛型)
+  - [类型守护](#类型守护)
+  - [重载函数](#重载函数)
+  - [type 类型别名](##type-类型别名)
+  - [联合类型 |](#联合类型-)
+  - [交叉类型 &](#交叉类型-)
 - [高级类型和语法](#高级类型和语法)
-  - 特殊类型
-    - any
-    - never / unknown
-    - void
-  - namespace 命名空间
-  - in 可以遍历枚举类型
-  - infer
-  - typeof 捕获变量的类型
-  - typeof 捕获类成员的类型
-  - keyof 捕获键的名称
-  - as const
-  - readonly
-  - 内置类型别名
+  - [特殊类型](#特殊类型)
+    - [any](#any)
+    - [never / unknown](#never--unknown)
+    - [void](#void)
+  - [namespace 命名空间](#namespace-命名空间)
+  - [in 可以遍历枚举类型](#in-可以遍历枚举类型)
+  - [infer](#infer)
+  - [typeof 捕获变量的类型](#typeof-捕获变量的类型)
+  - [typeof 捕获类成员的类型](#typeof-捕获类成员的类型)
+  - [keyof 捕获键的名称](#keyof-捕获键的名称)
+  - [as const](#as-const)
+  - [readonly](#readonly)
+  - [内置类型别名](#内置类型别名)
   - 自定义类型
     - 模块内类型
     - 全局类型
     - 全局工具方法
 - [TS 3.7 最新语法](#ts-37-最新语法)
-  - Optional Chaining（可选链操作符）
-  - Nullish Coalescing（双问号操作符）
+  - [Optional Chaining（可选链操作符）](#optional-chaining可选链操作符)
+  - [Nullish Coalescing（双问号操作符）](#nullish-coalescing双问号操作符)
 - [让 TypeScript 变得更好](#让-typescript-变得更好)
-  - 不解人意的对象类型
-  - SuperEnum vs Enum
-  - 类型提示最终处理结果
+  - [在编译完成的代码中没有进行路径解析](#在编译完成的代码中没有进行路径解析)
+  - [不解人意的对象类型](#不解人意的对象类型)
+  - [SuperEnum vs Enum](#superenum-vs-enum)
+  - [类型提示最终处理结果](#类型提示最终处理结果)
 - [参考文章](#参考文章)
 
 <div id="介绍" />
