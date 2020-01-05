@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
-    "start": "nodemon src/index.ts"
+    "start": "nodemon -r tsconfig-paths/register src/index.ts"
   },
   "nodemonConfig": {
     "watch": [
