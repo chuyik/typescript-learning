@@ -1,4 +1,4 @@
-export function limitRandom(max, min) {
+export function limitRandom(max: number, min: number): number {
   return Math.random() * (max - min) + min
 }
 
