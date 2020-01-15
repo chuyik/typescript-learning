@@ -22,6 +22,6 @@ import "./basic/intersection"
 
 // import './better/enum'
 
-import randomString from '~/utils/random-string'
+import randomString from '~src/utils/random-string'
 
 console.log('randomString: ', randomString())

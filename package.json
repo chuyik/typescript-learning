@@ -1,11 +1,13 @@
 {
   "name": "typescript-learning",
   "version": "1.0.0",
-  "description": "",
+  "description": "TypeScript Learning",
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
-    "start": "nodemon -r tsconfig-paths/register src/index.ts"
+    "start": "TS_NODE_FILES=true nodemon --inspect -r ts-node/register -r tsconfig-paths/register src/index.ts",
+    "run:script": "ts-node -r tsconfig-paths/register --files",
+    "rs": "yarn run:script"
   },
   "nodemonConfig": {
     "watch": [
@@ -15,7 +17,7 @@
       "tsconfig.json"
     ],
     "execMap": {
-      "ts": "ts-node"
+      "ts": "node"
     }
   },
   "dependencies": {

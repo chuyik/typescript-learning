@@ -14,7 +14,7 @@
   - [泛型](#泛型)
   - [类型守护](#类型守护)
   - [重载函数](#重载函数)
-  - [type 类型别名](##type-类型别名)
+  - [type 类型别名](#type-类型别名)
   - [联合类型 |](#联合类型-)
   - [交叉类型 &](#交叉类型-)
 - [高级类型和语法](#高级类型和语法)
@@ -31,10 +31,12 @@
   - [as const](#as-const)
   - [readonly](#readonly)
   - [内置类型别名](#内置类型别名)
-  - 自定义类型
-    - 模块内类型
-    - 全局类型
-    - 全局工具方法
+- 声明文件（Declaration File）
+  - TS 文件作用域
+  - .d.ts 文件
+  - 全局类型声明（在模块内部）
+  - 使用全局类型 ts-node 报错
+  - 编译后 .d.ts 丢失（针对于 NPM 项目）
 - [TS 3.7 最新语法](#ts-37-最新语法)
   - [Optional Chaining（可选链操作符）](#optional-chaining可选链操作符)
   - [Nullish Coalescing（双问号操作符）](#nullish-coalescing双问号操作符)
@@ -42,7 +44,7 @@
   - [在编译完成的代码中没有进行路径解析](#在编译完成的代码中没有进行路径解析)
   - [不解人意的对象类型](#不解人意的对象类型)
   - [SuperEnum vs Enum](#superenum-vs-enum)
-  - [类型提示最终处理结果](#类型提示最终处理结果)
+  - [类型应该提示最终执行结果](#类型应该提示最终执行结果)
 - [参考文章](#参考文章)
 
 <div id="介绍" />
@@ -477,8 +479,62 @@ Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType /
 
 <p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
-<div id="参考文章" />
+# 声明文件（Declaration File）
 
+## TS 文件作用域
+
+**在 Typescript 中，只要文件存在 import 或 export 关键字，都被视为模块文件。**
+
+**也就是不管 TS 文件还是 .d.ts 文件，如果不存在上述关键字，文件内的`变量、函数、或者类型`都是以全局作用域存在于项目中的。**
+
+**存在上述关键字之一，则作用域为当前文件。**
+
+## .d.ts 文件
+
+TypeScript 有两种主要的文件。
+
+- .ts 文件是包含**类型**和**可执行代码**的实现文件，这些编译产生 .js 文件。
+
+- .d.ts 文件是仅包含**类型信息**的声明文件，这些文件不会产生输出，它们仅用于类型检查。
+
+编译 TypeScript 项目时，有一个选项可以生成声明文件（.d.ts），在此过程中，编译器会剥离所有函数和方法体，并仅保留导出类型的签名。然后，当第三方开发人员从 TypeScript 使用它时，生成的声明文件可用于描述 JavaScript 库或模块导出的虚拟 TypeScript 类型。
+
+*声明文件的概念类似于 C / C ++ 中的头文件的概念。*
+
+也可以手动为现有的 JavaScript 库或项目中的包编写类型声明文件。
+
+Reference: `@types/*.d.ts`, `src/type-scope/*.ts`.
+
+## 全局类型声明（在模块内部）
+
+`module.d.ts`: 
+
+```typescript
+// 因为有 import 关键字，所以该文件内的类型作用域为当前文件。
+import { Types } from 'mongoose'
+
+// 可通过 declare global 显式声明里面的类型为全局作用域。
+declare global {
+  type ObjectIdMixed = string | Types.ObjectId
+}
+```
+
+## 使用全局类型 ts-node 报错
+
+问题：全局类型 ts-node 运行抛错（TS2304），提示找不到 .d.ts 文件内的类型声明？
+
+*issue 链接： https://github.com/TypeStrong/ts-node/issues/882*
+
+解决: https://github.com/TypeStrong/ts-node/blob/master/README.md#help-my-types-are-missing
+
+## 编译后 .d.ts 丢失（针对于 NPM 项目）
+
+**NPM 模块里面的内建声明文件必须使用模块导出声明写法， 否则 TypeScript 编译无法通过。**
+
+问题：那么问题来了，对于类型声明文件 .d.ts ，tsc 编译并不会自动导出 .d.ts 文件到编译的结果目录。
+
+解决：确定正确的导入路径，连同定义的 .d.ts 文件一起推到 NPM ？
+  
 # TS 3.7 最新语法
 
 ## Optional Chaining（可选链操作符）
@@ -492,11 +548,11 @@ if (user && user.address) {
 callback && callback()
 
 // after
-if (user?.address) {    // 自判断属性访问
+if (user?.address) {    // 自动判断属性访问
   // ...     
 }
 
-callback?.()    // 自判断函数调用
+callback?.()    // 自动判断函数调用
 ```
 ## Nullish Coalescing（双问号操作符）
 
@@ -594,7 +650,7 @@ console.log(Grades.map.silver)    // 2
 console.log(Grades.map[2])        // 'silver'
 ```
 
-## 类型提示最终处理结果
+## 类型应该提示最终执行结果
 
 ![type-tips.png](./imgs/type-tips.png)
 
