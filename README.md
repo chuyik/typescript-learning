@@ -31,12 +31,12 @@
   - [as const](#as-const)
   - [readonly](#readonly)
   - [内置类型别名](#内置类型别名)
-- 声明文件（Declaration File）
-  - TS 文件作用域
-  - .d.ts 文件
-  - 全局类型声明（在模块内部）
-  - 使用全局类型 ts-node 报错
-  - 编译后 .d.ts 丢失（针对于 NPM 项目）
+- [声明文件（Declaration File）](#声明文件declaration-file)
+  - [TS 文件作用域](#ts-文件作用域)
+  - [.d.ts 文件](#dts-文件)
+  - [全局类型声明（在模块内部）](#全局类型声明在模块内部)
+  - [使用全局类型 ts-node 报错](#使用全局类型-ts-node-报错)
+  - [编译后 .d.ts 丢失（针对于 NPM 项目）](#编译后-dts-丢失针对于-npm-项目)
 - [TS 3.7 最新语法](#ts-37-最新语法)
   - [Optional Chaining（可选链操作符）](#optional-chaining可选链操作符)
   - [Nullish Coalescing（双问号操作符）](#nullish-coalescing双问号操作符)
