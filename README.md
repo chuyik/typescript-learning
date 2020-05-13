@@ -603,6 +603,14 @@ superEnum Grades {
   trial,
 }
 
+
+// 第三种变体
+console.log(Grades.values())        // [2, 3, 4, 5]
+console.log(Grades.keys())          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.silver)          // 2
+console.log(Grades[2])              // 'silver'
+console.log(Grades.map())           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
+
 // 第一种变体
 console.log(Grades.values)        // [2, 3, 4, 5]
 console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
