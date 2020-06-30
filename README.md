@@ -37,9 +37,10 @@
   - [全局类型声明（在模块内部）](#全局类型声明在模块内部)
   - [使用全局类型 ts-node 报错](#使用全局类型-ts-node-报错)
   - [编译后 .d.ts 丢失（针对于 NPM 项目）](#编译后-dts-丢失针对于-npm-项目)
-- [TS 3.7 最新语法](#ts-37-最新语法)
-  - [Optional Chaining（可选链操作符）](#optional-chaining可选链操作符)
-  - [Nullish Coalescing（双问号操作符）](#nullish-coalescing双问号操作符)
+- [TS 各种新操作符](#ts-各种新操作符)
+  - [[2.0] Non-null assertion operator（非空断言符）](#20Non-null-assertion-operator非空断言符)
+  - [[3.7] Optional Chaining（可选链操作符）](#37optional-chaining可选链操作符)
+  - [[3.7] Nullish Coalescing（双问号操作符）](#37nullish-coalescing双问号操作符)
 - [让 TypeScript 变得更好](#让-typescript-变得更好)
   - [在编译完成的代码中没有进行路径解析](#在编译完成的代码中没有进行路径解析)
   - [不解人意的对象类型](#不解人意的对象类型)
@@ -535,9 +536,26 @@ declare global {
 
 解决：确定正确的导入路径，连同定义的 .d.ts 文件一起推到 NPM ？
   
-# TS 3.7 最新语法
+# TS 各种新操作符
 
-## Optional Chaining（可选链操作符）
+## [2.0] Non-null assertion operator（非空断言符）
+
+```typescript
+function createGoods(value: number): { type: string } | undefined {
+  if (value > 0.5) {
+    return { type: 'apple' }
+  }
+  return
+}
+
+const goods = createGoods(10)
+
+goods.type  // ERROR: Object is possibly 'undefined'. (2532)
+
+goods!.type  // ✅
+```
+
+## [3.7] Optional Chaining（可选链操作符）
 
 ```typescript
 // before
@@ -554,7 +572,7 @@ if (user?.address) {    // 自动判断属性访问
 
 callback?.()    // 自动判断函数调用
 ```
-## Nullish Coalescing（双问号操作符）
+## [3.7] Nullish Coalescing（双问号操作符）
 
 ```typescript
 // before
