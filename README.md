@@ -28,7 +28,7 @@
   - [typeof 捕获变量的类型](#typeof-捕获变量的类型)
   - [typeof 捕获类成员的类型](#typeof-捕获类成员的类型)
   - [keyof 捕获键的名称](#keyof-捕获键的名称)
-  - [as const](#as-const)
+  - [const 断言（as const）](#as-const)
   - [readonly](#readonly)
   - [内置类型别名](#内置类型别名)
 - [声明文件（Declaration File）](#声明文件declaration-file)
@@ -463,7 +463,7 @@ color = "anythingElse" // Error
 
 ## as const
 
-@TODO:
+https://www.staging-typescript.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 
 ## readonly
 
