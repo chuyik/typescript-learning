@@ -7,30 +7,46 @@
 - [介绍](#介绍)
 - [使用入门](#使用入门)
 - [基本类型和语法](#基本类型和语法)
-  - 原始类型
-  - 数组
-  - 接口
-  - 枚举
-  - 泛型
-  - 类型守护
-  - 重载函数
-  - type 类型别名
-  - 联合类型 |
-  - 交叉类型 &
+  - [原始类型](#原始类型)
+  - [数组](#数组)
+  - [接口](#接口)
+  - [枚举](#枚举)
+  - [泛型](#泛型)
+  - [类型守护](#类型守护)
+  - [重载函数](#重载函数)
+  - [type 类型别名](#type-类型别名)
+  - [联合类型 |](#联合类型-)
+  - [交叉类型 &](#交叉类型-)
 - [高级类型和语法](#高级类型和语法)
-  - 特殊类型
-    - any
-    - never / unknown
-    - void
-  - namespace 命名空间
-  - in 可以遍历枚举类型
-  - infer
-  - typeof 捕获变量的类型
-  - typeof 捕获类成员的类型
-  - keyof 捕获键的名称
-  - as const
-  - readonly
-  - 内置类型别名
+  - [特殊类型](#特殊类型)
+    - [any](#any)
+    - [never / unknown](#never--unknown)
+    - [void](#void)
+  - [namespace 命名空间](#namespace-命名空间)
+  - [in 可以遍历枚举类型](#in-可以遍历枚举类型)
+  - [infer](#infer)
+  - [typeof 捕获变量的类型](#typeof-捕获变量的类型)
+  - [typeof 捕获类成员的类型](#typeof-捕获类成员的类型)
+  - [keyof 捕获键的名称](#keyof-捕获键的名称)
+  - [const 断言（as const）](#as-const)
+  - [readonly](#readonly)
+  - [内置类型别名](#内置类型别名)
+- [声明文件（Declaration File）](#声明文件declaration-file)
+  - [TS 文件作用域](#ts-文件作用域)
+  - [.d.ts 文件](#dts-文件)
+  - [全局类型声明（在模块内部）](#全局类型声明在模块内部)
+  - [使用全局类型 ts-node 报错](#使用全局类型-ts-node-报错)
+  - [编译后 .d.ts 丢失（针对于 NPM 项目）](#编译后-dts-丢失针对于-npm-项目)
+- [TS 各种新操作符](#ts-各种新操作符)
+  - [[2.0] Non-null assertion operator（非空断言符）](#20-non-null-assertion-operator非空断言符)
+  - [[3.7] Optional Chaining（可选链操作符）](#37-optional-chaining可选链操作符)
+  - [[3.7] Nullish Coalescing（双问号操作符）](#37-nullish-coalescing双问号操作符)
+  - [[4.0] Short-Circuiting Assignment Operators（复合赋值操作符）](#40-short-circuiting-assignment-operators复合赋值操作符)
+- [让 TypeScript 变得更好](#让-typescript-变得更好)
+  - [在编译完成的代码中没有进行路径解析](#在编译完成的代码中没有进行路径解析)
+  - [不解人意的对象类型](#不解人意的对象类型)
+  - [SuperEnum vs Enum](#superenum-vs-enum)
+  - [类型应该提示最终执行结果](#类型应该提示最终执行结果)
 - [参考文章](#参考文章)
 
 <div id="介绍" />
@@ -322,12 +338,34 @@ const b = x.b
 
 `never` 示例：
 
+> 实际上的体现就是只能抛出错误
+
 ```ts
 function fail(message: string): never {
   throw new Error(message)
 }
 
 let foo: never = 123 // 赋值会报错
+```
+
+`Any`
+```typescript
+let value: any
+
+value = 'xxx'   // OK
+value.foo.bar()  // OK
+
+let value2: string = value  // OK
+```
+
+`unknown`
+```typescript
+let value: unknown
+
+value = 'xxx'   // OK
+value.foo.bar()  // Error
+
+let value2: string = value  // Error
 ```
 
 ### void
@@ -427,7 +465,7 @@ color = "anythingElse" // Error
 
 ## as const
 
-@TODO:
+https://www.staging-typescript.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 
 ## readonly
 
@@ -443,7 +481,259 @@ Partial / Required / Readonly / Pick / Record / Exclude / Extract / ReturnType /
 
 <p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
-<div id="参考文章" />
+# 声明文件（Declaration File）
+
+## TS 文件作用域
+
+**在 Typescript 中，只要文件存在 import 或 export 关键字，都被视为模块文件。**
+
+**也就是不管 TS 文件还是 .d.ts 文件，如果不存在上述关键字，文件内的`变量、函数、或者类型`都是以全局作用域存在于项目中的。**
+
+**存在上述关键字之一，则作用域为当前文件。**
+
+## .d.ts 文件
+
+TypeScript 有两种主要的文件。
+
+- .ts 文件是包含**类型**和**可执行代码**的实现文件，这些编译产生 .js 文件。
+
+- .d.ts 文件是仅包含**类型信息**的声明文件，这些文件不会产生输出，它们仅用于类型检查。
+
+编译 TypeScript 项目时，有一个选项可以生成声明文件（.d.ts），在此过程中，编译器会剥离所有函数和方法体，并仅保留导出类型的签名。然后，当第三方开发人员从 TypeScript 使用它时，生成的声明文件可用于描述 JavaScript 库或模块导出的虚拟 TypeScript 类型。
+
+*声明文件的概念类似于 C / C ++ 中的头文件的概念。*
+
+也可以手动为现有的 JavaScript 库或项目中的包编写类型声明文件。
+
+Reference: `@types/*.d.ts`, `src/type-scope/*.ts`.
+
+## 全局类型声明（在模块内部）
+
+`module.d.ts`: 
+
+```typescript
+// 因为有 import 关键字，所以该文件内的类型作用域为当前文件。
+import { Types } from 'mongoose'
+
+// 可通过 declare global 显式声明里面的类型为全局作用域。
+declare global {
+  type ObjectIdMixed = string | Types.ObjectId
+}
+```
+
+## 使用全局类型 ts-node 报错
+
+问题：全局类型 ts-node 运行抛错（TS2304），提示找不到 .d.ts 文件内的类型声明？
+
+*issue 链接： https://github.com/TypeStrong/ts-node/issues/882*
+
+解决: https://github.com/TypeStrong/ts-node/blob/master/README.md#help-my-types-are-missing
+
+## 编译后 .d.ts 丢失（针对于 NPM 项目）
+
+**NPM 模块里面的内建声明文件必须使用模块导出声明写法， 否则 TypeScript 编译无法通过。**
+
+问题：那么问题来了，对于类型声明文件 .d.ts ，tsc 编译并不会自动导出 .d.ts 文件到编译的结果目录。
+
+解决：确定正确的导入路径，连同定义的 .d.ts 文件一起推到 NPM ？
+  
+# TS 各种新操作符
+
+## [2.0] Non-null assertion operator（非空断言符）
+
+```typescript
+function createGoods(value: number): { type: string } | undefined {
+  if (value > 0.5) {
+    return { type: 'apple' }
+  }
+  return
+}
+
+const goods = createGoods(10)
+
+goods.type  // ERROR: Object is possibly 'undefined'. (2532)
+
+goods!.type  // ✅
+```
+
+## [3.7] Optional Chaining（可选链操作符）
+
+```typescript
+// before
+if (user && user.address) {
+  // ...
+}
+
+callback && callback()
+
+// after
+if (user?.address) {    // 自动判断属性访问
+  // ...     
+}
+
+callback?.()    // 自动判断函数调用
+```
+## [3.7] Nullish Coalescing（双问号操作符）
+
+```typescript
+// before
+const isBlack = params.isBlack || true   // ❌
+const isBlack = params.hasOwnProperty('isBlack') ? params.isBlack : true  // ✅
+
+// after
+const isBlack = params.isBlack ?? true  // ✅
+```
+
+## [4.0] Short-Circuiting Assignment Operators（复合赋值操作符）
+
+> 在 JavaScript 和许多程序语言中，称之为 `Compound Assignment Operators`（复合赋值操作符）
+
+```typescript
+// Addition
+// a = a + b
+a += b;
+
+// Subtraction
+// a = a - b
+a -= b;
+
+// Multiplication
+// a = a * b
+a *= b;
+
+// Division
+// a = a / b
+a /= b;
+
+// Exponentiation
+// a = a ** b
+a **= b;
+
+// Left Bit Shift
+// a = a << b
+a <<= b;
+```
+
+新增：
+
+```typescript
+a &&= b   // a && (a = b)
+a ||= b   // a || (a = b)
+a ??= b   // a ?? (a = b)
+```
+
+示例：
+
+```typescript
+let values: string[];
+
+// Before
+(values ?? (values = [])).push("hello");
+
+// After
+(values ??= []).push("hello");
+```
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
+
+# 让 TypeScript 变得更好
+
+### 在编译完成的代码中没有进行路径解析
+> Module path maps are not resolved in emitted code #10866
+> https://github.com/microsoft/TypeScript/issues/10866
+
+解决方案：
+
+```typescript
+// tsc 编译后支持
+tscpaths: tsc && tscpaths -p tsconfig.json -s ./src -o ./dist
+
+// ts-node 运行支持
+tsconfig-paths: npx ts-node -r tsconfig-paths/register src/index.ts
+```
+
+## 不解人意的对象类型
+
+`src/better/object-type`
+
+## SuperEnum vs Enum
+
+`Enum`:
+
+![enum.png](./imgs/enum.png)
+
+`superEnum` 数字类型（变得更强）：
+
+```typescript
+superEnum Grades {
+  silver = 2,
+  gold,
+  pt,
+  trial,
+}
+
+
+// 第三种变体
+console.log(Grades.values())        // [2, 3, 4, 5]
+console.log(Grades.keys())          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.silver)          // 2
+console.log(Grades[2])              // 'silver'
+console.log(Grades.map())           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
+
+// 第一种变体
+console.log(Grades.values)        // [2, 3, 4, 5]
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.map.silver)    // 2
+console.log(Grades.map[2])        // 'silver'
+console.log(Grades.map)           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
+
+// 第二种变体，增加关键字 values、keys、map
+console.log(Grades.values)        // [2, 3, 4, 5]
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.silver)        // 2
+console.log(Grades[2])            // 'silver'
+console.log(Grades.map)           // { silver: 2, gold: 3, pt: 4, trial: 5, '2': silver, ... '5': 'trial' }
+```
+
+`superEnum` 字符串类型（变得更智能）：
+
+```typescript
+superEnum Grades {
+  silver: string,
+  gold,
+  pt,
+  trial,
+}
+
+console.log(Grades.values)        // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.map.silver)    // 'silver'
+console.log(Grades.map)           // { silver: 'silver', gold: 'gold', pt: 'pt', trial: 'trial' }
+```
+
+`superEnum` 类型混合：
+
+```typescript
+superEnum Grades: string {
+  silver = 2,
+  gold: string,
+  pt = 'platinum',
+  trial,
+}
+
+console.log(Grades.values)        // [2, 'gold', 'platinum', 'trial']
+console.log(Grades.keys)          // ['silver', 'gold', 'pt', 'trial']
+console.log(Grades.map.silver)    // 2
+console.log(Grades.map[2])        // 'silver'
+```
+
+## 类型应该提示最终执行结果
+
+![type-tips.png](./imgs/type-tips.png)
+
+Real Reference: `utils/zone-space`
+
+<p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
 
 # 参考文章
 

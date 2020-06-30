@@ -1,20 +1,34 @@
 {
   "name": "typescript-learning",
   "version": "1.0.0",
-  "description": "",
+  "description": "TypeScript Learning",
   "main": "src/index.ts",
   "scripts": {
-    "build": "npx tsc --outDir dist src/*",
-    "start": "nodemon --quiet --watch 'src/**/*.ts' --watch 'package.json' --exec 'ts-node' src/index.ts"
+    "build": "tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "start": "TS_NODE_FILES=true nodemon --inspect -r ts-node/register -r tsconfig-paths/register src/index.ts",
+    "run:script": "ts-node -r tsconfig-paths/register --files",
+    "rs": "yarn run:script"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/",
+      "@types/",
+      "package.json",
+      "tsconfig.json"
+    ],
+    "execMap": {
+      "ts": "node"
+    }
   },
   "dependencies": {
     "ts-node": "8.5.4",
+    "tsconfig-paths": "^3.9.0",
+    "tscpaths": "^0.0.9",
     "typescript": "3.7.3"
   },
-  "license": "MIT",
   "devDependencies": {
     "nodemon": "1.18.4",
     "prettier": "^1.19.1"
   },
-  "keywords": []
+  "license": "MIT"
 }

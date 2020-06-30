@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
+    "target": "es6",
     "module": "commonjs",
     "esModuleInterop": true,
-    "sourceMap": false,
-    "allowJs": false,
-    "lib": [
-      "ES2015",
-      "DOM"
-    ],
-    "rootDir": "src",
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "~src/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "scripts/**/*",
+    "@types/**/*"
+  ],
+  "compileOnSave": true
 }
