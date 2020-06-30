@@ -41,6 +41,7 @@
   - [[2.0] Non-null assertion operator（非空断言符）](#20-non-null-assertion-operator非空断言符)
   - [[3.7] Optional Chaining（可选链操作符）](#37-optional-chaining可选链操作符)
   - [[3.7] Nullish Coalescing（双问号操作符）](#37-nullish-coalescing双问号操作符)
+  - [[4.0] Short-Circuiting Assignment Operators（复合赋值操作符）](#40-short-circuiting-assignment-operators复合赋值操作符)
 - [让 TypeScript 变得更好](#让-typescript-变得更好)
   - [在编译完成的代码中没有进行路径解析](#在编译完成的代码中没有进行路径解析)
   - [不解人意的对象类型](#不解人意的对象类型)
@@ -581,6 +582,56 @@ const isBlack = params.hasOwnProperty('isBlack') ? params.isBlack : true  // ✅
 
 // after
 const isBlack = params.isBlack ?? true  // ✅
+```
+
+## [4.0] Short-Circuiting Assignment Operators（复合赋值操作符）
+
+> 在 JavaScript 和许多程序语言中，称之为 `Compound Assignment Operators`（复合赋值操作符）
+
+```typescript
+// Addition
+// a = a + b
+a += b;
+
+// Subtraction
+// a = a - b
+a -= b;
+
+// Multiplication
+// a = a * b
+a *= b;
+
+// Division
+// a = a / b
+a /= b;
+
+// Exponentiation
+// a = a ** b
+a **= b;
+
+// Left Bit Shift
+// a = a << b
+a <<= b;
+```
+
+新增：
+
+```typescript
+a &&= b   // a && (a = b)
+a ||= b   // a || (a = b)
+a ??= b   // a ?? (a = b)
+```
+
+示例：
+
+```typescript
+let values: string[];
+
+// Before
+(values ?? (values = [])).push("hello");
+
+// After
+(values ??= []).push("hello");
 ```
 
 <p align="right"><b><a href="#导航">↥ 返回顶部</a></b></p>
